@@ -60,9 +60,9 @@ async function submitOrder() {
     products
   };
 
-  const response = await fetch(API_URL, {
+  const response = await fetch(`/api/proxy?url=${encodeURIComponent(scriptUrl)}`, {
     method: "POST",
-    body: JSON.stringify(payload)
+    body: formData
   });
   const result = await response.json();
   if (result.result === "ok") {
