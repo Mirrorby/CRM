@@ -1,197 +1,75 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Новый заказ — For You CRM</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 1rem;
-      background-color: #f9f9f9;
-      max-width: 600px;
-      margin: auto;
-    }
-
-    h2, h3 {
-      text-align: center;
-      margin-top: 0;
-    }
-
-    .page label {
-      font-weight: 600;
-      margin-top: 1rem;
-      display: block;
-    }
-
-    .page input,
-    .page select,
-    .page textarea {
-      width: 100%;
-      font-size: 1rem;
-      padding: 0.5rem;
-      margin-top: 0.25rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      box-sizing: border-box;
-    }
-
-    .add-product,
-    .submit-order {
-      width: 100%;
-      font-size: 1.1rem;
-      padding: 0.75rem;
-      margin-top: 1rem;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-    }
-
-    .add-product {
-      background-color: #007bff;
-      color: #fff;
-    }
-
-    .submit-order {
-      background-color: #28a745;
-      color: white;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Новый заказ</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-  <div id="new-order" class="page">
+  <div class="container">
     <h2>Новый заказ</h2>
 
-    <!-- Клиент -->
-    <label>Имя клиента</label>
-    <input type="text" id="clientName" placeholder="Введите имя" required>
+    <label>ФИО <input type="text" id="name"></label>
+    <label>Телефон <input type="text" id="phone"></label>
+    <label>Мессенджер
+      <select id="messenger">
+        <option value="Telegram">Telegram</option>
+        <option value="WhatsApp">WhatsApp</option>
+        <option value="Viber">Viber</option>
+      </select>
+    </label>
+    <label>Адрес доставки <input type="text" id="address"></label>
+    <label>Канал продаж
+      <select id="channel">
+        <option value="OZON">OZON</option>
+        <option value="WB">WB</option>
+        <option value="Яндекс">Яндекс</option>
+      </select>
+    </label>
+    <label>Логистика
+      <select id="logistics">
+        <option value="СДЭК">СДЭК</option>
+        <option value="Boxberry">Boxberry</option>
+        <option value="Почта России">Почта России</option>
+      </select>
+    </label>
 
-    <label>Телефон клиента</label>
-    <input type="tel" id="clientPhone" placeholder="+7..." required>
+    <div id="products">
+      <h3>Товары</h3>
+      <div class="product-block">
+        <label>Артикул <input type="text" class="article"></label>
+        <label>Поставщик <input type="text" class="supplier"></label>
+        <label>Количество <input type="number" class="count"></label>
+        <label>Сумма заказа <input type="number" class="order-sum"></label>
+        <label>Сумма закупа <input type="number" class="purchase-sum"></label>
+        <label>Комментарий <input type="text" class="comment"></label>
+        <label>Фото <input type="file" accept="image/*" class="photo"></label>
+      </div>
+    </div>
 
-    <label>Адрес доставки</label>
-    <textarea id="clientAddress" placeholder="Введите адрес" required></textarea>
-
-    <!-- Продажи и логистика -->
-    <label>Канал продаж</label>
-    <select id="channel" required>
-      <option value="">Выбери канал</option>
-      <option>Телеграм</option>
-      <option>WKO</option>
-      <option>Ав-1</option>
-      <option>Ав-2</option>
-      <option>ТГ Постоянник</option>
-      <option>Викео постоянник</option>
-      <option>Постоянник</option>
-      <option>Дропер</option>
-      <option>%</option>
-    </select>
-
-    <label>Логистика</label>
-    <select id="deliveryService" required>
-      <option value="">Выбери логистику</option>
-      <option>СДЕК</option>
-      <option>Авито СДЕК</option>
-      <option>Авито Почта РФ</option>
-      <option>Авито Boxberry</option>
-      <option>Почта РФ</option>
-      <option>Самовывоз</option>
-      <option>Достависта</option>
-      <option>Яндекс</option>
-      <option>x EXMAIL</option>
-      <option>Boxberry</option>
-      <option>Авито Яндекс</option>
-      <option>Наш курьер</option>
-      <option>JDE</option>
-      <option>Авито Сберлогистика</option>
-      <option>Авито DPD</option>
-      <option>Мегатранс</option>
-      <option>МэджикТранс</option>
-      <option>Деловые Линии</option>
-      <option>КИТ</option>
-      <option>ПЭК</option>
-      <option>Энергия</option>
-      <option>5POST</option>
-      <option>КСЕ</option>
-      <option>Байкал</option>
-    </select>
-
-    <label>Дата заказа</label>
-    <input type="date" id="orderDate" required>
-
-    <!-- Товары -->
-    <h3>Товары</h3>
-    <div id="productList"></div>
-    <button class="add-product" onclick="addProduct()">➕ Добавить товар</button>
-
-    <!-- Общий комментарий -->
-    <label>Комментарий для сборщика</label>
-    <textarea id="orderComment" placeholder="Укажите детали заказа..."></textarea>
-
-    <button class="submit-order" onclick="submitOrder()">📤 Отправить заказ</button>
+    <button onclick="addProductBlock()">➕ Ещё товар</button>
+    <button onclick="submitOrder()">✅ Сохранить заказ</button>
   </div>
 
   <script>
-    function addProduct() {
-      const list = document.getElementById("productList");
-      const index = list.children.length + 1;
-
-      const wrapper = document.createElement("div");
-      wrapper.style.marginBottom = "1rem";
-      wrapper.innerHTML = `
-        <label>Товар №${index}</label>
-        <input type="text" placeholder="Артикул">
-        <input type="number" placeholder="Кол-во">
-        <input type="number" placeholder="Сумма заказа (₽)">
-        <input type="number" placeholder="Сумма закупа (₽)">
-        <input type="text" placeholder="№ заказа">
-        <input type="text" placeholder="Трек-номер">
-        <select>
-          <option value="">Склад / поставщик</option>
-          <option>У Арута</option>
-          <option>Мой склад</option>
-          <option>Пос-Y1 склад</option>
-          <option>Пос-Y2 склад</option>
-          <option>Пос-Y30 склад</option>
-          <option>Пос-S1 склад</option>
-          <option>Пос-S2 склад</option>
-          <option>Пос-K1 склад</option>
-          <option>Пос-Y1</option>
-          <option>Пос-Y2</option>
-          <option>Пос-Y3</option>
-          <option>Пос-Y4</option>
-          <option>Пос-Y5</option>
-          <option>Пос-Y6</option>
-          <option>Пос-Y7</option>
-          <option>Пос-Y8</option>
-          <option>Пос-Y9</option>
-          <option>Пос-Y10</option>
-          <option>Пос-Y11</option>
-          <option>Пос-Y12</option>
-          <option>Пос-Y20</option>
-          <option>Пос-Y31</option>
-          <option>Пост-Y30</option>
-          <option>Пос-Y13</option>
-          <option>Пост-Y15</option>
-          <option>Пост-Y14</option>
-          <option>Пост-17</option>
-          <option>Через Сахи</option>
-        </select>
+    function addProductBlock() {
+      const container = document.getElementById("products");
+      const block = document.createElement("div");
+      block.className = "product-block";
+      block.innerHTML = `
+        <label>Артикул <input type="text" class="article"></label>
+        <label>Поставщик <input type="text" class="supplier"></label>
+        <label>Количество <input type="number" class="count"></label>
+        <label>Сумма заказа <input type="number" class="order-sum"></label>
+        <label>Сумма закупа <input type="number" class="purchase-sum"></label>
+        <label>Комментарий <input type="text" class="comment"></label>
+        <label>Фото <input type="file" accept="image/*" class="photo"></label>
       `;
-
-      list.appendChild(wrapper);
-    }
-
-    function submitOrder() {
-      alert("Заявка отправлена! (пока без логики)");
+      container.appendChild(block);
     }
   </script>
-
-<div class="nav-bar">
-  <button onclick="goHome()">🏠 На главную</button>
-</div>
-
+  <script src="script.js"></script>
 </body>
 </html>
