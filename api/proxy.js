@@ -1,18 +1,21 @@
-
+// /api/proxy.js
 export default async function handler(req, res) {
-  const scriptUrl = 'https://script.google.com/macros/s/AKfycbw_Y2A4JPXvi6IlRqXp81wyMCVVxpKwYUhSwydifs5drV50gis0EpU0K2HkjaVH0T0kjA/exec';
+  const url = req.query.url;
 
-  const options = {
-    method: req.method,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(req.body)
-  };
+  if (!url) {
+    return res.status(400).json({ error: "Missing URL" });
+  }
 
   try {
-    const response = await fetch(scriptUrl, options);
-    const data = await response.json();
-    res.status(200).json(data);
+    const response = await fetch(decodeURIComponent(url), {
+      method: req.method,
+      headers: req.headers,
+      body: req.method !== 'GET' ? req.body : undefined
+    });
+
+    const data = await response.text();
+    res.status(response.status).send(data);
   } catch (error) {
-    res.status(500).json({ error: 'Ошибка при проксировании запроса', details: error.toString() });
+    res.status(500).json({ error: "Proxy error", details: error.toString() });
   }
 }
