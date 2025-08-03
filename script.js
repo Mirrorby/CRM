@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbw_Y2A4JPXvi6IlRqXp81wyMCVVxpKwYUhSwydifs5drV50gis0EpU0K2HkjaVH0T0kjA/exec";
+const API_URL = "/api/proxy";
 
 async function uploadPhoto(file) {
   return new Promise((resolve, reject) => {
