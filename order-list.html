@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Список заказов — For You CRM</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 1rem;
+      background-color: #f2f2f2;
+      max-width: 960px;
+      margin: auto;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .filter-toggle {
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+      text-align: left;
+    }
+
+    .filters {
+      display: none;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .filters select,
+    .filters input {
+      padding: 0.5rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+
+    .order-card {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      box-shadow: 0 0 4px rgba(0,0,0,0.1);
+    }
+
+    .order-card p {
+      margin: 0.25rem 0;
+    }
+
+    .status {
+      font-weight: bold;
+      color: #555;
+      margin-top: 0.5rem;
+    }
+
+    .status span {
+      background: #eee;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      margin-left: 0.5rem;
+    }
+
+    .toast {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #28a745;
+      color: white;
+      padding: 0.75rem 1.25rem;
+      border-radius: 6px;
+      font-weight: bold;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Список заказов</h2>
+
+<button class="filter-toggle" onclick="toggleFilters()">🔽 Показать/Скрыть фильтр</button>
+
+<div class="filters" id="filters">
+  
+<label>Период</label>
+<select onchange="toggleCustomDate(this)">
+  <option value="">Выбери</option>
+  <option value="today">Сегодня</option>
+  <option value="week">Последние 7 дней</option>
+  <option value="month">Месяц</option>
+  <option value="custom">Задать период</option>
+</select>
+<div id="customDateRange" style="display:none; gap: 0.5rem; margin-top: 0.5rem;">
+  <input type="date" placeholder="От">
+  <input type="date" placeholder="До">
+</div>
+
+
+  <label>Канал продаж</label><select>
+<option>Телеграм</option>
+<option>WKO</option>
+<option>Ав-1</option>
+<option>Ав-2</option>
+<option>ТГ Постоянник</option>
+<option>Викео постоянник</option>
+<option>Постоянник</option>
+<option>Дропер</option>
+<option>%</option>
+</select>
+
+  <label>Склад</label>
+  <select>
+    <option>Все</option>
+    <option>У Арута</option>
+<option>Мой склад</option>
+<option>Пос-Y1 склад</option>
+<option>Пос-Y2  склад</option>
+<option>Пос-Y30 склад</option>
+<option>Пос-S1 склад</option>
+<option>Пос-S2 склад</option>
+<option>Пос-K1 склад</option>
+<option>Пос-Y1</option>
+<option>Пос-Y2</option>
+<option>Пос-Y3</option>
+<option>Пос-Y4</option>
+<option>Пос-Y5</option>
+<option>Пос-Y6</option>
+<option>Пос-Y7</option>
+<option>Пос-Y8</option>
+<option>Пос-Y9</option>
+<option>Пос-Y10</option>
+<option>Пос-Y11</option>
+<option>Пос-Y12</option>
+<option>Пос-Y20</option>
+<option>Пос-Y31</option>
+<option>Пост-Y30</option>
+<option>Пос-Y13</option>
+<option>Пост-Y15</option>
+<option>Пост-Y14</option>
+<option>Пост-17</option>
+<option>Через Сахи</option>
+  </select>
+
+  <label>Логистика</label>
+  <select>
+    <option>Все</option>
+    <option>СДЕК</option>
+<option>Авито СДЕК</option>
+<option>Авито Почта РФ</option>
+<option>Авито Boxberry</option>
+<option>Почта РФ</option>
+<option>Самовывоз</option>
+<option>Достависта</option>
+<option>Яндекс</option>
+<option>x EXMAIL</option>
+<option>Boxberry</option>
+<option>Авито Яндекс</option>
+<option>Наш курьер</option>
+<option>JDE</option>
+<option>Авито Сберлогистика</option>
+<option>Авито DPD</option>
+<option>Мегатранс</option>
+<option>МэджикТранс</option>
+<option>Деловые Линии</option>
+<option>КИТ</option>
+<option>ПЭК</option>
+<option>Энергия</option>
+<option>5POST</option>
+<option>КСЕ</option>
+<option>Байкал</option>
+  </select>
+
+  
+<label>Статус заказа</label>
+<select>
+  <option>Новый</option>
+  <option>Ожидает поставки</option>
+  <option>Собирается</option>
+  <option>Собран</option>
+  <option>Передан в доставку</option>
+  <option>В пути</option>
+  <option>Доставлен</option>
+  <option>Отменён</option>
+  <option>Возврат</option>
+</select>
+
+
+  <label>Поиск</label>
+  <input type="text" placeholder="Поиск по заказу, треку, ФИО...">
+</div>
+
+<div class="order-card">
+  <p><strong>№ заказа:</strong> 1001</p>
+  <p><strong>Клиент:</strong> Иван Иванов — +7 900 123-45-67</p>
+  <p><strong>Адрес:</strong> Москва, ул. Примерная, д. 1</p>
+  <p class="status">Статус: <span>Собран</span> — 2025-07-30 14:21</p>
+</div>
+
+<div class="toast" id="toast">✅ Изменения сохранены</div>
+
+<script>
+  function toggleFilters() {
+    const filters = document.getElementById("filters");
+    filters.style.display = filters.style.display === "flex" ? "none" : "flex";
+  }
+
+  function showToast() {
+    const toast = document.getElementById("toast");
+    toast.style.display = "block";
+    setTimeout(() => { toast.style.display = "none"; }, 3000);
+  }
+
+  // showToast(); // вызвать для проверки
+
+function toggleCustomDate(sel) {
+  const block = document.getElementById("customDateRange");
+  block.style.display = sel.value === "custom" ? "flex" : "none";
+}
+
+</script>
+
+
+<div class="nav-bar">
+  <button onclick="goHome()">🏠 На главную</button>
+</div>
+
+</body>
+</html>

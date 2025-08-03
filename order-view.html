@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Просмотр заказа — For You CRM</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 1rem;
+      background-color: #f4f4f4;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 1rem;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.25rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .status-block {
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .product-block {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .product-block button.remove-product {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn {
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.75rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn-save {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .btn-add {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .toast {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #28a745;
+      color: white;
+      padding: 0.75rem 1.25rem;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Заказ #1234</h2>
+
+<div class="status-block">
+  Статус: 🟡 В обработке | 2025-07-31 14:22
+</div>
+
+<!-- Клиент -->
+<label>Имя клиента</label>
+<input type="text" value="Иван Петров">
+
+<label>Телефон клиента</label>
+<input type="tel" value="+7 999 123-45-67">
+
+<label>Адрес доставки</label>
+<textarea>ул. Ленина, 1, кв. 10</textarea>
+
+<!-- Детали -->
+<label>Канал продаж</label>
+<select>
+  <option>Телеграм</option>
+  <option selected>WKO</option>
+  <option>Ав-1</option>
+</select>
+
+<label>Логистика</label>
+<select>
+  <option>СДЕК</option>
+  <option selected>Яндекс</option>
+</select>
+
+<label>Склад / поставщик</label>
+<select>
+  <option>Пос-Y1</option>
+  <option selected>Пост-Y30</option>
+  <option>Через Сахи</option>
+</select>
+
+<label>Комментарий</label>
+<textarea>Упаковать аккуратно</textarea>
+
+<!-- Товары -->
+<h3>Товары</h3>
+<div id="productList">
+
+  <div class="product-block">
+    <button class="remove-product" onclick="this.parentElement.remove()">✖</button>
+    <label>Артикул</label>
+    <input type="text" value="123456">
+    <label>Кол-во</label>
+    <input type="number" value="2">
+    <label>Сумма заказа (₽)</label>
+    <input type="number" value="2000">
+    <label>Сумма закупа (₽)</label>
+    <input type="number" value="1400">
+    <label>№ заказа (товара)</label>
+    <input type="text" value="A1">
+    <label>Трек-номер</label>
+    <input type="text" value="TR123456789RU">
+    <label>Склад / поставщик</label>
+    <select>
+      <option selected>Пост-Y30</option>
+      <option>Пос-Y2</option>
+      <option>Через Сахи</option>
+    </select>
+  </div>
+
+</div>
+
+<button class="btn btn-add" onclick="addProduct()">➕ Добавить товар</button>
+<button class="btn btn-save" onclick="showToast()">💾 Сохранить изменения</button>
+
+<div class="toast" id="toast">✅ Изменения сохранены</div>
+
+<script>
+  function addProduct() {
+    const productList = document.getElementById("productList");
+    const div = document.createElement("div");
+    div.className = "product-block";
+    div.innerHTML = \`
+      <button class="remove-product" onclick="this.parentElement.remove()">✖</button>
+      <label>Артикул</label><input type="text">
+      <label>Кол-во</label><input type="number">
+      <label>Сумма заказа (₽)</label><input type="number">
+      <label>Сумма закупа (₽)</label><input type="number">
+      <label>№ заказа (товара)</label><input type="text">
+      <label>Трек-номер</label><input type="text">
+      <label>Склад / поставщик</label>
+      <select>
+        <option>Пос-Y1</option>
+        <option>Пос-Y2</option>
+        <option>Пос-Y30</option>
+        <option>Пост-Y30</option>
+        <option>Через Сахи</option>
+      </select>
+    \`;
+    productList.appendChild(div);
+  }
+
+  function showToast() {
+    const toast = document.getElementById("toast");
+    toast.style.display = "block";
+    setTimeout(() => { toast.style.display = "none"; }, 3000);
+  }
+</script>
+
+
+<div class="nav-bar">
+  <button onclick="goHome()">🏠 На главную</button>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ожидают поставки — For You CRM</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f2f2f2;
+      padding: 1rem;
+      margin: 0 auto;
+      max-width: 960px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .filter-toggle {
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+      text-align: left;
+    }
+
+    .filters {
+      display: none;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .filters select {
+      padding: 0.5rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+
+    .order-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 0 4px rgba(0,0,0,0.1);
+    }
+
+    .product {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0.25rem 0;
+    }
+
+    .product input[type="checkbox"] {
+      transform: scale(1.2);
+    }
+
+    .save-btn {
+      margin-top: 0.75rem;
+      display: none;
+      padding: 0.5rem;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .toast {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #28a745;
+      color: white;
+      padding: 0.75rem 1.25rem;
+      border-radius: 6px;
+      font-weight: bold;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+<h2 id="pageTitle">Ожидают поставки</h2>
+<script>document.getElementById("pageTitle").innerText += " (" + document.querySelectorAll('.order-card').length + ")";</script>
+
+<button class="filter-toggle" onclick="toggleFilters()">🔽 Показать/Скрыть фильтр</button>
+
+<div class="filters" id="filters">
+  <label>Склад</label>
+  <select>
+    <option>Все</option>
+    <option>У Арута</option>
+    <option>Мой склад</option>
+    <option>Пос-Y1 склад</option>
+    <option>Пос-Y2  склад</option>
+    <option>Пос-Y30 склад</option>
+    <option>Пос-S1 склад</option>
+    <option>Пос-S2 склад</option>
+    <option>Пос-K1 склад</option>
+    <option>Пос-Y1</option>
+    <option>Пос-Y2</option>
+    <option>Пос-Y3</option>
+    <option>Пос-Y4</option>
+    <option>Пос-Y5</option>
+    <option>Пос-Y6</option>
+    <option>Пос-Y7</option>
+    <option>Пос-Y8</option>
+    <option>Пос-Y9</option>
+    <option>Пос-Y10</option>
+    <option>Пос-Y11</option>
+    <option>Пос-Y12</option>
+    <option>Пос-Y20</option>
+    <option>Пос-Y31</option>
+    <option>Пост-Y30</option>
+    <option>Пос-Y13</option>
+    <option>Пост-Y15</option>
+    <option>Пост-Y14</option>
+    <option>Пост-17</option>
+    <option>Через Сахи</option>
+  </select>
+</div>
+
+<div class="order-card" id="card1">
+  <p><strong>№ заказа:</strong> 1003</p>
+  <p><strong>Создан:</strong> 2025-07-29 09:35</p>
+  <div class="product"><span>Товар А (Пос-Y1)</span><input type="checkbox" onchange="showSave(this)"/></div>
+  <div class="product"><span>Товар B, 1 шт. (Пос-Y2)</span><input type="checkbox" onchange="showSave(this)"/></div>
+  <button class="save-btn" onclick="saveChanges(this)">Сохранить</button>
+</div>
+
+<div class="toast" id="toast">✅ Изменения сохранены</div>
+
+<script>
+  function toggleFilters() {
+    const f = document.getElementById("filters");
+    f.style.display = f.style.display === "flex" ? "none" : "flex";
+  }
+
+  function showSave(checkbox) {
+    const card = checkbox.closest('.order-card');
+    const btn = card.querySelector('.save-btn');
+    btn.style.display = 'block';
+  }
+
+  function saveChanges(btn) {
+    btn.style.display = 'none';
+    const toast = document.getElementById("toast");
+    toast.style.display = "block";
+    setTimeout(() => { toast.style.display = "none"; }, 3000);
+  }
+</script>
+
+
+<div class="nav-bar">
+  <button onclick="goHome()">🏠 На главную</button>
+</div>
+
+</body>
+</html>

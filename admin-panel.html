@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Админ-панель — For You CRM</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f2f2f2;
+      padding: 1rem;
+      margin: 0 auto;
+      max-width: 960px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .section {
+      background: white;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 4px rgba(0,0,0,0.1);
+    }
+
+    .section h3 {
+      margin-top: 0;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 0.5rem;
+    }
+
+    .section ul {
+      padding-left: 1rem;
+      margin: 0.5rem 0;
+    }
+
+    .section ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+
+    button:disabled {
+      background-color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Админ-панель</h2>
+
+<div class="section">
+  <h3>Пользователи</h3>
+  <ul>
+    <li>Добавление новых пользователей</li>
+    <li>Редактирование и удаление</li>
+    <li>Назначение прав (админ / менеджер / сборщик / курьер)</li>
+  </ul>
+  <button>Управление пользователями</button>
+</div>
+
+<div class="section">
+  <h3>Справочники</h3>
+  <ul>
+    <li>Каналы продаж</li>
+    <li>Логистика</li>
+    <li>Склады / Поставщики</li>
+  </ul>
+  <button>Редактировать справочники</button>
+</div>
+
+<div class="section">
+  <h3>Активность и журнал</h3>
+  <ul>
+    <li>Просмотр истории заказов</li>
+    <li>Лог смены статусов</li>
+    <li>Действия пользователей</li>
+  </ul>
+  <button>Открыть лог</button>
+</div>
+
+<div class="section">
+  <h3>Сервисные функции</h3>
+  <ul>
+    <li>Архивирование завершённых заказов</li>
+    <li>Экспорт заказов</li>
+    <li>Сброс фильтров и кеша</li>
+  </ul>
+  <button>Открыть инструменты</button>
+</div>
+
+
+<div class="nav-bar">
+  <button onclick="goHome()">🏠 На главную</button>
+</div>
+
+</body>
+</html>
